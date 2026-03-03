@@ -83,21 +83,17 @@ Return strictly valid JSON:
 """
 
 
-# -----------------------------
-# Utility to extract JSON safely
-# -----------------------------
+# extracting the json response
 def extract_json(text):
     start = text.index("{")
     end = text.rindex("}") + 1
     return json.loads(text[start:end])
 
 
-# -----------------------------
-# MAIN FUNCTION
-# -----------------------------
+# main function
 def parse_document(image):
 
-    # -------- Stage 1: Detect Document Type --------
+    # document type
     classification_response = client.models.generate_content(
         model=MODEL_NAME,
         contents=[image, CLASSIFICATION_PROMPT]
@@ -115,7 +111,7 @@ def parse_document(image):
             "raw_response": classification_response.text
         }
 
-    # -------- Stage 2: Choose Proper Prompt --------
+    # prompt call
     if doc_type == "pan_card":
         prompt = PAN_PROMPT
     elif doc_type == "aadhaar_card":
